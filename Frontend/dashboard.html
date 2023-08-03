@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Project Management Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <header>
+    <h1>Project Management Dashboard</h1>
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Projects</a></li>
+      <li><a href="#">Tasks</a></li>
+      <!-- Add more navigation links as needed -->
+    </ul>
+  </nav>
+
+  <main>
+    <section class="projects">
+      <h2>Projects</h2>
+      <!-- Project cards go here -->
+      <button id="projects-container"><h3>All Projects</h3></button>
+    </section>
+
+    <section class="tasks">
+      <h2>Tasks</h2>
+      <!-- Task lists go here -->
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2023 Software Development Solutions Company</p>
+  </footer>
+
+  <script>
+    const projectsContainer = document.getElementById('projects-container');
+    projectsContainer.addEventListener('click', function (event) {
+
+      fetch('http://localhost:3000/api/projects')
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          data.forEach(project => {
+            const projectElement = document.createElement('div');
+            projectElement.textContent = project.name;
+            projectsContainer.appendChild(projectElement);
+          });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    });
+  </script>
+</body>
+
+</html>

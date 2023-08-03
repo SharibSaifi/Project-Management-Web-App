@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Project Management App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <h1>Project Management App</h1>
+
+    <form id="projectForm">
+        <input type="text" id="projectName" placeholder="Project Name" required>
+        <input type="text" id="task" placeholder="Task Description" required>
+        <button type="submit">Add Project/Task</button>
+    </form>
+
+    <div>
+        <h2>Projects</h2>
+        <!-- Example select dropdown for filtering or sorting -->
+        <select id="filterSelect">
+            <option value="all">All</option>
+            <option value="completed">Completed</option>
+            <option value="pending">Pending</option>
+            <option value="due-date">Due Date</option>
+            <option value="priority">Priority</option>
+        </select>
+        <div>
+            <ul id="projectList">
+                <li>
+                    <h3>Project 1</h3>
+                    <ul>
+                        <li>Task 1</li>
+                        <li>Task 2</li>
+                    </ul>
+                </li>
+                <li>
+                    <h3>Project 2</h3>
+                    <ul>
+                        <li>Task 3</li>
+                        <li>Task 4</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+
+        const form = document.getElementById('projectForm');
+        form.addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Call the validateForm function before submitting the form
+            if (validateForm()) {
+
+                // Get the project name and tasks from the form
+                const projectNameInput = document.getElementById('projectName');
+                const taskInput = document.getElementById('task');
+
+                const projectName = projectNameInput.value;
+                const task = taskInput.value;
+
+                // Reset the form inputs
+                projectNameInput.value = '';
+                taskInput.value = '';
+
+                // Create new project and task elements
+                const projectElement = document.createElement('li');
+                const projectHeading = document.createElement('h3');
+                projectHeading.textContent = projectName;
+
+                const taskElement = document.createElement('li');
+                taskElement.textContent = task;
+
+                let taskList = projectElement.querySelector('ul');
+                if (!taskList) {
+                    taskList = document.createElement('ul');
+                    projectElement.appendChild(projectHeading);
+                    projectElement.appendChild(taskList);
+                }
+
+                //Append the task element to the task list
+                taskList.appendChild(taskElement);
+
+                //Append the project element to the project list container
+                const projectList = document.getElementById('projectList');
+                projectList.appendChild(projectElement);
+
+                form.reset();
+            }
+        });
+
+        // Function to validate the form inputs
+        function validateForm() {
+            const projectInput = document.getElementById('projectName');
+            const taskInput = document.getElementById('task');
+
+            // Check if the required fields are filled out
+            if (projectInput.value.trim() === '') {
+                alert('Please enter a project name.');
+                return false;
+            }
+
+            if (taskInput.value.trim() === '') {
+                alert('Please enter a task description.');
+                return false;
+            }
+
+            return true;
+        }
+
+        // Function to handle the form submission
+        function addProjectAndTasks(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+        }
+
+        // Function to handle task completion
+        function toggleTaskCompletion(event) {
+            const taskElement = event.target;
+
+            // Toggle the 'completed' class on the task element
+            taskElement.classList.toggle('completed');
+        }
+
+        // Attach the event listener to the task list
+        const projectList = document.getElementById('projectList');
+        projectList.addEventListener('click', toggleTaskCompletion);
+
+        // Function to filter or sort projects and tasks
+        function filterTasks(criteria) {
+            const taskList = document.getElementById('projectList');
+            const projects = Array.from(taskList.children);
+
+            projects.forEach(project => {
+                const tasks = Array.from(project.querySelectorAll('li'));
+
+                tasks.forEach(task => {
+                    // Apply the filtering or sorting logic based on the selected criteria
+
+                    // Example: Filter tasks based on the task's status
+                    if (criteria === 'completed' && !task.classList.contains('completed')) {
+                        task.style.display = 'none';
+                    } else if (criteria === 'pending' && task.classList.contains('completed')) {
+                        task.style.display = 'none';
+                    } else {
+                        task.style.display = 'block';
+                    }
+
+                    // Example: Sort tasks based on due date
+                    if (criteria === 'due-date') {
+                        // Implement sorting logic based on the task's due date
+                    }
+
+                    // Example: Sort tasks based on priority
+                    if (criteria === 'priority') {
+                        // Implement sorting logic based on the task's priority
+                    }
+                });
+            });
+        }
+
+        // Attach the event listener to the filter or sort element
+        const filterSelect = document.getElementById('filterSelect');
+        filterSelect.addEventListener('change', function (event) {
+            const selectedCriteria = event.target.value;
+            filterTasks(selectedCriteria);
+        });
+
+    </script>
+
+</body>
+
+</html>

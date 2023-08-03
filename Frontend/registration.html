@@ -1,0 +1,71 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Page</title>
+</head>
+
+<body>
+    <form id="registrationForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit">Register</button>
+    </form>
+    <script>
+        function validateRegistrationInput(userInput) {
+            // Initialize an empty errors array
+            const errors = [];
+            // Validate the name field
+            if (!userInput.name || userInput.name.trim() === '') {
+                errors.push('Name is required');
+            }
+            // Validate the email field
+            if (!userInput.email || userInput.email.trim() === '') {
+                errors.push('Email is required');
+            }
+            // Validate the password field
+            if (!userInput.password || userInput.password.length < 6) {
+                errors.push('Password must be at least 6 characters long');
+            }
+            // Return the errors array
+            return errors;
+        }
+
+
+        const registrationForm = document.getElementById('registrationForm');
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const errorContainer = document.getElementById('errorContainer');
+
+        registrationForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const name = nameInput.value.trim();
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+
+            const userInput = { name, email, password };
+            const validationErrors = validateRegistrationInput(userInput);
+
+            if (validationErrors.length > 0) {
+                errorContainer.innerHTML = validationErrors.join('<br>');
+                return;
+            }
+
+            errorContainer.innerHTML = '';
+
+        });
+    </script>
+</body>
+
+</html>
